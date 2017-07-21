@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -26,22 +27,37 @@ public class JsonConverter {
         System.out.printf(jsonNode.toString());
     }
 
-    public void readJsonAsObject(String json) {
+    private void readJsonFromFile() {
+        ClassLoader classLoader = getClass().getClassLoader();
+        File jsonFile = new File(classLoader.getResource("jsonFile.json").getFile());
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            MonthlyShows showsInApril = objectMapper.readValue(json, TypeFactory.defaultInstance().constructType(MonthlyShows.class));
-            System.out.println("month:" + showsInApril.month);
-            for (LiveShow s : showsInApril.live_shows)
-                System.out.println(s.showid+ "\t" + s.time + "\t" + s.provider);
+            MonthlyShows showsInApril = objectMapper.readValue(jsonFile, TypeFactory.defaultInstance().constructType(MonthlyShows.class));
+            this.printJsonObject(showsInApril);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    public void readJsonAsObject(String json) {
+        try {
+            MonthlyShows showsInApril = objectMapper.readValue(json, TypeFactory.defaultInstance().constructType(MonthlyShows.class));
+            this.printJsonObject(showsInApril);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void printJsonObject(MonthlyShows showsInApril) {
+        System.out.println("month:" + showsInApril.month);
+        for (LiveShow s : showsInApril.live_shows)
+            System.out.println(s.showid + "\t" + s.time + "\t" + s.provider);
+    }
+
     public static void main(String[] args) {
-        String json = "{\"live_shows\":[{\"showid\":\"show1\",\"time\":\"02216629\",\"provider\":0,\"sponser\":\"governmental\"},{\"showid\":\"show2\",\"time\":\"00050340\",\"provider\":2,\"sponser\":\"business\"}],\"month\":\"April\"}";
+//        String json = "{\"live_shows\":[{\"showid\":\"show1\",\"time\":\"02216629\",\"provider\":0,\"sponser\":\"governmental\"},{\"showid\":\"show2\",\"time\":\"00050340\",\"provider\":2,\"sponser\":\"business\"}],\"month\":\"April\"}";
         JsonConverter jsonConverter = new JsonConverter();
 //        jsonConverter.generateJsonObject();
-        jsonConverter.readJsonAsObject(json);
+//        jsonConverter.readJsonAsObject(json);
+        jsonConverter.readJsonFromFile();
     }
 }
