@@ -16,12 +16,18 @@ public class LiveShow implements Serializable {
 
     @JsonProperty("showid")
     public String showid;
+
     @JsonProperty("time")
     public String time;
+
     @JsonProperty("provider")
     public int provider;
+
     @JsonProperty("sponser")
     public String sponser;
+
+    @JsonProperty("sample_double")
+    public Float sampleDouble;
 
     @JsonCreator
     public LiveShow(@JsonProperty("showid") String showid,

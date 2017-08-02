@@ -21,6 +21,8 @@ public class JsonConverter {
 
     public void generateJsonObject() {
         LiveShow liveShow = new LiveShow("s101", "", 1, "ABC sponser");
+        liveShow.sampleDouble = 0.12f;
+
         MonthlyShows monthlyShows = new MonthlyShows(new LiveShow[]{liveShow}, "July");
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.valueToTree(monthlyShows);
@@ -56,7 +58,7 @@ public class JsonConverter {
     public static void main(String[] args) {
 //        String json = "{\"live_shows\":[{\"showid\":\"show1\",\"time\":\"02216629\",\"provider\":0,\"sponser\":\"governmental\"},{\"showid\":\"show2\",\"time\":\"00050340\",\"provider\":2,\"sponser\":\"business\"}],\"month\":\"April\"}";
         JsonConverter jsonConverter = new JsonConverter();
-//        jsonConverter.generateJsonObject();
+        jsonConverter.generateJsonObject();
 //        jsonConverter.readJsonAsObject(json);
         jsonConverter.readJsonFromFile();
     }
